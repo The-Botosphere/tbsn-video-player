@@ -34,8 +34,7 @@
       padding: 20px;
     }
 
-    .player-container iframe,
-    .player-container video {
+    iframe {
       width: 100%;
       max-width: 900px;
       height: 55vh;
@@ -86,7 +85,7 @@
     TBSN Video Player
   </header>
 
-  <div class="url-box">
+  <div class="url-box" id="url-box">
     <input id="video-url" type="text" placeholder="Paste a YouTube, Vimeo, or MP4 URL..." />
     <button onclick="loadVideo()">Play</button>
   </div>
@@ -113,22 +112,33 @@
         const id = url.split("vimeo.com/")[1];
         return "https://player.vimeo.com/video/" + id;
       }
-      return url; // MP4 or direct video links
+      return url;
     }
 
-    function loadVideo() {
-      const input = document.getElementById("video-url").value.trim();
+    function loadVideo(urlOverride = null) {
+      const input = urlOverride || document.getElementById("video-url").value.trim();
       const player = document.getElementById("player");
 
-      if (!input) {
-        alert("Please paste a video URL");
-        return;
-      }
+      if (!input) return;
 
       const embedUrl = convertToEmbed(input);
       player.src = embedUrl;
+    }
+
+    // ----- AUTO-LOAD ON PAGE OPEN -----
+    const params = new URLSearchParams(window.location.search);
+    const urlParam = params.get("url");
+
+    if (urlParam) {
+      // Hide paste box if URL provided
+      document.getElementById("url-box").style.display = "none";
+      loadVideo(urlParam);
+    } else {
+      // Load a default video
+      loadVideo("DEFAULT_VIDEO_URL_HERE");
     }
   </script>
 
 </body>
 </html>
+
