@@ -117,4 +117,139 @@
       width: 65px;
       height: 65px;
       border-radius: 50%;
-      border:
+      border: 6px solid rgba(255,255,255,0.15);
+      border-top: 6px solid #ff3c00;
+      animation: spin 0.8s linear infinite;
+      z-index: 2;
+    }
+
+    @keyframes spin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    iframe {
+      width: 100%;
+      height: 62vh;
+      border: none;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      border-radius: 22px;
+      z-index: 3;
+      position: relative;
+    }
+
+    /* Custom play bar (hidden when autoplay/default loads) */
+    .url-box {
+      display: flex;
+      justify-content: center;
+      margin: 25px auto;
+      width: 90%;
+      max-width: 600px;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .url-box input {
+      flex: 1;
+      padding: 14px;
+      border-radius: 14px 0 0 14px;
+      border: none;
+      background: rgba(255,255,255,0.10);
+      color: #ffffff;
+      font-size: 1rem;
+      border: 1px solid rgba(255,255,255,0.15);
+      backdrop-filter: blur(5px);
+    }
+
+    .url-box button {
+      padding: 14px 18px;
+      background: linear-gradient(90deg, #ff3c00, #ffaa55);
+      border: none;
+      border-radius: 0 14px 14px 0;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      opacity: 0.75;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Background FX -->
+  <div class="orb orange"></div>
+  <div class="orb blue"></div>
+
+  <header>BotoSphere Media Portal</header>
+  <div class="tagline">Video. Bots. Everywhere.</div>
+
+  <div class="url-box" id="url-box">
+    <input id="video-url" type="text" placeholder="Paste a YouTube, Vimeo, or MP4 URL..." />
+    <button onclick="manualPlay()">Play</button>
+  </div>
+
+  <div class="player-wrapper">
+    <div id="spinner"></div>
+    <iframe id="player" allowfullscreen></iframe>
+  </div>
+
+  <footer>Powered by The Botosphere • video.tbsn.fun</footer>
+
+  <script>
+    function convertToEmbed(url) {
+      if (url.includes("youtube.com/watch?v=")) {
+        const id = url.split("v=")[1].split("&")[0];
+        return "https://www.youtube.com/embed/" + id + "?autoplay=1&controls=1";
+      }
+      if (url.includes("youtu.be/")) {
+        const id = url.split("youtu.be/")[1].split("?")[0];
+        return "https://www.youtube.com/embed/" + id + "?autoplay=1&controls=1";
+      }
+      return url + "?autoplay=1";
+    }
+
+    function loadVideo(url) {
+      const iframe = document.getElementById("player");
+      const spinner = document.getElementById("spinner");
+      iframe.style.opacity = "0";
+      spinner.style.display = "block";
+      iframe.src = convertToEmbed(url);
+
+      iframe.onload = () => {
+        spinner.style.display = "none";
+        iframe.style.opacity = "1";
+      };
+    }
+
+    function manualPlay() {
+      const input = document.getElementById("video-url").value.trim();
+      if (!input) return alert("Please enter a valid video URL.");
+      loadVideo(input);
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const urlParam = params.get("url");
+
+    if (urlParam) {
+      document.getElementById("url-box").style.display = "none";
+      loadVideo(urlParam);
+    } else {
+      document.getElementById("url-box").style.display = "none";
+      loadVideo("https://www.youtube.com/embed/L9NRzqm-FFw?autoplay=1");
+    }
+  </script>
+
+</body>
+</html>
