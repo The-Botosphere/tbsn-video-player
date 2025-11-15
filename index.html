@@ -6,195 +6,115 @@
   <title>BotoSphere Media Portal</title>
 
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap');
+
     body {
       margin: 0;
       padding: 0;
-      font-family: "Inter", Arial, sans-serif;
-      background: radial-gradient(circle at top, #0e0e0e, #050505);
-      color: #efefef;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      font-family: "Inter", sans-serif;
+      background: #020202;
+      color: #ffffff;
       overflow-x: hidden;
     }
 
+    /* Animated floating background orbs */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.35;
+      animation: float 18s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .orb.orange {
+      width: 420px;
+      height: 420px;
+      background: #ff3c00;
+      top: 5%;
+      left: -10%;
+      animation-duration: 24s;
+    }
+
+    .orb.blue {
+      width: 380px;
+      height: 380px;
+      background: #0085ff;
+      bottom: -15%;
+      right: -15%;
+      animation-duration: 28s;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0,0); }
+      50% { transform: translate(40px, -30px); }
+      100% { transform: translate(0,0); }
+    }
+
+    /* HEADER */
     header {
       text-align: center;
-      padding: 28px 10px 10px;
-      font-size: 2.4rem;
-      font-weight: 800;
-      background: transparent;
-      letter-spacing: 0.5px;
+      padding: 40px 0 10px;
+      font-size: 2.7rem;
+      font-weight: 900;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
-      background: linear-gradient(to right, #ff4400, #ffaa77);
+      background: linear-gradient(90deg, #ff3c00, #ffaa55, #0085ff);
       -webkit-background-clip: text;
       color: transparent;
-      margin-top: 10px;
     }
 
     .tagline {
       text-align: center;
-      margin-top: -10px;
-      margin-bottom: 25px;
-      font-size: 1rem;
+      margin-top: -14px;
+      font-size: 1.05rem;
+      opacity: 0.75;
       font-style: italic;
-      color: #bbbbbb;
-      opacity: 0.9;
     }
 
-    /* GLASS CARD PLAYER WRAPPER */
-    .glass-card {
-      max-width: 980px;
-      margin: auto;
-      width: 90%;
-      padding: 18px;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      box-shadow: 0 0 35px rgba(0,0,0,0.6);
+    /* Glass Player Card */
+    .player-wrapper {
       position: relative;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 0;
+      border-radius: 28px;
+      backdrop-filter: blur(20px);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 0 40px rgba(255,60,0,0.15), 
+                  0 0 60px rgba(0,133,255,0.15);
+      overflow: hidden;
     }
 
-    /* SPINNER */
+    /* Neon animated border */
+    .player-wrapper::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 28px;
+      padding: 3px;
+      background: linear-gradient(140deg, #ff3c00, #0085ff, #ffaa55);
+      -webkit-mask: 
+        linear-gradient(#fff 0 0) content-box, 
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      animation: glow 6s linear infinite;
+    }
+
+    @keyframes glow {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    /* LOADING SPINNER */
     #spinner {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      border: 6px solid rgba(255,255,255,0.1);
-      border-top: 6px solid #ff3c00;
+      width: 65px;
+      height: 65px;
       border-radius: 50%;
-      width: 56px;
-      height: 56px;
-      animation: spin 0.8s linear infinite;
-      z-index: 5;
-    }
-
-    @keyframes spin {
-      0% { transform: translate(-50%, -50%) rotate(0deg); }
-      100% { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-
-    iframe {
-      width: 100%;
-      height: 58vh;
-      border-radius: 14px;
-      border: none;
-      background: #000;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-    }
-
-    .url-box {
-      display: flex;
-      justify-content: center;
-      margin: 20px auto;
-      width: 92%;
-      max-width: 560px;
-    }
-
-    .url-box input {
-      flex: 1;
-      padding: 12px;
-      border-radius: 8px 0 0 8px;
-      border: none;
-      font-size: 1rem;
-      background: #1c1c1c;
-      color: #efefef;
-      border: 1px solid #333;
-    }
-
-    .url-box button {
-      padding: 12px 16px;
-      background: #ff4400;
-      border: 1px solid #ff4400;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      border-radius: 0 8px 8px 0;
-    }
-
-    footer {
-      text-align: center;
-      padding: 18px;
-      font-size: 0.9rem;
-      color: #777;
-      margin-top: 15px;
-    }
-  </style>
-</head>
-
-<body>
-
-  <header>BotoSphere Media Portal</header>
-  <div class="tagline">Video. Bots. Everywhere.</div>
-
-  <div class="url-box" id="url-box">
-    <input id="video-url" type="text" placeholder="Paste a YouTube, Vimeo, or MP4 URL..." />
-    <button onclick="manualPlay()">Play</button>
-  </div>
-
-  <div class="glass-card">
-    <div id="spinner"></div>
-    <iframe id="player" allowfullscreen></iframe>
-  </div>
-
-  <footer>Powered by The Botosphere • video.tbsn.fun</footer>
-
-  <script>
-    function convertToEmbed(url) {
-      if (url.includes("youtube.com/watch?v=")) {
-        const id = url.split("v=")[1].split("&")[0];
-        return "https://www.youtube.com/embed/" + id + "?autoplay=1&controls=1";
-      }
-      if (url.includes("youtu.be/")) {
-        const id = url.split("youtu.be/")[1].split("?")[0];
-        return "https://www.youtube.com/embed/" + id + "?autoplay=1&controls=1";
-      }
-      if (url.includes("vimeo.com")) {
-        const id = url.split("vimeo.com/")[1];
-        return "https://player.vimeo.com/video/" + id + "?autoplay=1";
-      }
-      return url + "?autoplay=1";
-    }
-
-    function loadVideo(url) {
-      const embedUrl = convertToEmbed(url);
-      const iframe = document.getElementById("player");
-      const spinner = document.getElementById("spinner");
-
-      iframe.style.opacity = "0";
-      spinner.style.display = "block";
-      iframe.src = embedUrl;
-
-      iframe.onload = () => {
-        spinner.style.display = "none";
-        iframe.style.opacity = "1";
-      };
-    }
-
-    function manualPlay() {
-      const input = document.getElementById("video-url").value.trim();
-      if (!input) return alert("Please enter a video URL.");
-      loadVideo(input);
-    }
-
-    const params = new URLSearchParams(window.location.search);
-    const urlParam = params.get("url");
-
-    if (urlParam) {
-      document.getElementById("url-box").style.display = "none";
-      loadVideo(urlParam);
-    } else {
-      document.getElementById("url-box").style.display = "none";
-      loadVideo("https://www.youtube.com/embed/L9NRzqm-FFw?autoplay=1");
-    }
-  </script>
-
-</body>
-</html>
-
-
-    
- 
+      border:
