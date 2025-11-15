@@ -3,27 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TBSN Video Player</title>
+  <title>BotoSphere Media Portal</title>
 
   <style>
     body {
       margin: 0;
       padding: 0;
-      font-family: Arial, sans-serif;
-      background: #0d0d0d;
-      color: #ffffff;
+      font-family: "Arial", sans-serif;
+      background-color: #0b0b0b;
+      color: #f0f0f0;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
     header {
-      padding: 20px;
+      padding: 22px;
       text-align: center;
-      font-size: 1.8rem;
-      font-weight: bold;
-      background: #111;
-      border-bottom: 2px solid #333;
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, #111, #1a1a1a);
+      border-bottom: 1px solid #333;
+    }
+
+    .subtext {
+      text-align: center;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      color: #bbbbbb;
+      font-style: italic;
     }
 
     .player-container {
@@ -36,37 +46,42 @@
 
     iframe {
       width: 100%;
-      max-width: 900px;
-      height: 55vh;
+      max-width: 950px;
+      height: 58vh;
       border-radius: 12px;
       border: none;
       background: #000;
+      box-shadow: 0 0 18px rgba(0,0,0,0.7);
     }
 
     .url-box {
       display: flex;
       justify-content: center;
-      margin: 15px auto 5px;
+      margin: 20px auto 5px;
       width: 95%;
       max-width: 600px;
     }
 
     .url-box input {
       flex: 1;
-      padding: 10px 12px;
+      padding: 12px 14px;
       border-radius: 6px 0 0 6px;
       border: none;
       font-size: 1rem;
+      background: #1d1d1d;
+      color: #f0f0f0;
+      border: 1px solid #333;
     }
 
     .url-box button {
-      padding: 10px 16px;
+      padding: 12px 18px;
       border: none;
       background: #ff3c00;
       color: white;
       font-weight: bold;
       cursor: pointer;
       border-radius: 0 6px 6px 0;
+      border: 1px solid #ff3c00;
     }
 
     footer {
@@ -74,16 +89,16 @@
       padding: 15px;
       font-size: 0.9rem;
       background: #111;
-      border-top: 2px solid #333;
+      border-top: 1px solid #333;
+      color: #aaaaaa;
     }
   </style>
-
 </head>
 
 <body>
-  <header>
-    TBSN Video Player
-  </header>
+
+  <header>BotoSphere Media Portal</header>
+  <div class="subtext">Video. Bots. Everywhere.</div>
 
   <div class="url-box" id="url-box">
     <input id="video-url" type="text" placeholder="Paste a YouTube, Vimeo, or MP4 URL..." />
@@ -94,9 +109,7 @@
     <iframe id="player" src="" allowfullscreen></iframe>
   </div>
 
-  <footer>
-    Powered by The Botosphere • video.tbsn.fun
-  </footer>
+  <footer>Powered by The Botosphere • video.tbsn.fun</footer>
 
   <script>
     function convertToEmbed(url) {
@@ -120,24 +133,25 @@
       const player = document.getElementById("player");
 
       if (!input) return;
-
       const embedUrl = convertToEmbed(input);
       player.src = embedUrl;
     }
 
-    // ----- AUTO-LOAD ON PAGE OPEN -----
+    // AUTO-LOAD LOGIC
     const params = new URLSearchParams(window.location.search);
     const urlParam = params.get("url");
 
     if (urlParam) {
-      // Bot passed a URL → hide box and auto-load
+      // Bot passed a video → hide paste box
       document.getElementById("url-box").style.display = "none";
       loadVideo(urlParam);
     } else {
-      // No URL passed → load your default placeholder video
+      // No URL passed → load your default placeholder video + hide the paste bar
+      document.getElementById("url-box").style.display = "none";
       loadVideo("https://www.youtube.com/embed/L9NRzqm-FFw");
     }
   </script>
 
 </body>
 </html>
+
