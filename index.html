@@ -130,15 +130,14 @@
     const urlParam = params.get("url");
 
     if (urlParam) {
-      // Hide paste box if URL provided
+      // Bot passed a URL → hide box and auto-load
       document.getElementById("url-box").style.display = "none";
       loadVideo(urlParam);
     } else {
-      // Load a default video
-      loadVideo("DEFAULT_VIDEO_URL_HERE");
+      // No URL passed → load your default placeholder video
+      loadVideo("https://www.youtube.com/embed/L9NRzqm-FFw");
     }
   </script>
 
 </body>
 </html>
-
